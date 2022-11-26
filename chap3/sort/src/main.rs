@@ -1,9 +1,13 @@
 pub fn sort(mut vec: Vec<i32>) -> Vec<i32> {
     if vec.len() > 1 {
-        if vec[0] > vec[1] {
-            let tmp: i32 = vec[0];
-            vec[0] = vec[1];
-            vec[1] = tmp;
+        for idx in 0..vec.len() {
+            let next_idx = idx + 1;
+            if next_idx == vec.len() { break };
+            if vec[idx] > vec[next_idx] {
+                let tmp: i32 = vec[idx];
+                vec[idx] = vec[next_idx];
+                vec[next_idx] = tmp;
+            }
         }
     }
 
@@ -16,7 +20,7 @@ mod sort_test {
 
     #[test]
     fn sorted() {
-        let expect = vec![1, 2];
-        assert_eq!(expect, sort(vec![2, 1]));
+        let expect = vec![1, 2, 3];
+        assert_eq!(expect, sort(vec![2, 3, 1]));
     }
 }
