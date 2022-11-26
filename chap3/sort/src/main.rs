@@ -1,5 +1,5 @@
 pub fn sort(vec: Vec<i32>) -> Vec<i32> {
-    return vec![0; 1];
+    return vec;
 }
 
 #[cfg(test)]
@@ -9,8 +9,6 @@ mod sort_test {
     #[test]
     fn sorted() {
         let expect = vec![0; 1];
-        let new = vec![1; 1];
-        let result = sort(new);
-        assert_eq!(expect, result);
+        assert_eq!(expect, sort(vec![0; 1]));
     }
 }
