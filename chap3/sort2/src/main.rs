@@ -9,21 +9,13 @@ pub fn sort(vec: Vec<i32>) -> Vec<i32> {
     }
 
     else {
-        let fst = vec[1];
-        let sec = vec[0];
-        let thd = vec[2];
-
-        let mut lessers = vec![0; 0];
-        let mut greaters = vec![0; 0];
-
-        if fst < sec { lessers.push(fst) }
-        if thd < sec { lessers.push(thd) }
-        if fst > sec { greaters.push(fst) }
-        if thd > sec { greaters.push(thd) }
+        let middle = vec[0];
+        let lessers = vec.iter().filter(|&x| x < &middle).cloned().collect();
+        let greaters = vec.iter().filter(|&x| x > &middle).cloned().collect();
 
         let mut result = vec![0; 0];
         result.append(&mut sort(lessers));
-        result.push(sec);
+        result.push(middle);
         result.append(&mut sort(greaters));
         return result;
     }
@@ -40,6 +32,6 @@ mod sort_test {
         assert_eq!(vec![1, 2, 3], sort(vec![2, 1, 3]));
         assert_eq!(vec![1, 2, 3], sort(vec![1, 3, 2]));
         assert_eq!(vec![1, 2, 3], sort(vec![3, 2, 1]));
-        //assert_eq!(vec![1, 2, 3, 4], sort(vec![1, 2, 3, 4]));
+        assert_eq!(vec![1, 2, 3, 4], sort(vec![1, 2, 3, 4]));
     }
 }
