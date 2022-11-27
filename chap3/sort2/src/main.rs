@@ -8,25 +8,27 @@ pub fn sort(vec: Vec<i32>) -> Vec<i32> {
         else { return vec![fst, sec]; }        
     }
 
-    if vec.len() == 3 {}
-    let fst = vec[0];
-    let sec = vec[1];
-    let thd = vec[2];
+    if vec.len() == 3 {
+        let fst = vec[0];
+        let sec = vec[1];
+        let thd = vec[2];
 
-    let mut lessers = vec![0; 0];
-    let mut greaters = vec![0; 0];
+        let mut lessers = vec![0; 0];
+        let mut greaters = vec![0; 0];
 
-    if fst < sec { lessers.push(fst) }
-    if thd < sec { lessers.push(thd) }
-    if fst > sec { greaters.push(fst) }
-    if thd > sec { greaters.push(thd) }
+        if fst < sec { lessers.push(fst) }
+        if thd < sec { lessers.push(thd) }
+        if fst > sec { greaters.push(fst) }
+        if thd > sec { greaters.push(thd) }
 
-    let mut result = vec![0; 0];
-    result.append(&mut lessers);
-    result.push(sec);
-    result.append(&mut greaters);
+        let mut result = vec![0; 0];
+        result.append(&mut lessers);
+        result.push(sec);
+        result.append(&mut greaters);
+        return result;
+    }
 
-    return result;
+    return vec;
 }
 
 #[cfg(test)]
