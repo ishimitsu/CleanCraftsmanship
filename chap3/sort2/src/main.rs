@@ -33,5 +33,7 @@ mod sort_test {
         assert_eq!(vec![1, 2, 3], sort(vec![1, 3, 2]));
         assert_eq!(vec![1, 2, 3], sort(vec![3, 2, 1]));
         assert_eq!(vec![1, 2, 3, 4], sort(vec![1, 2, 3, 4]));
+        assert_eq!(vec![1, 2, 3, 4], sort(vec![2, 1, 3, 4]));
+        assert_eq!(vec![1, 2, 3, 4], sort(vec![4, 3, 2, 1]));
     }
 }
