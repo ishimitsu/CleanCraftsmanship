@@ -19,12 +19,16 @@ impl Customer {
 mod customer_test {
     use super::*;
 
-    #[test]
-    fn regularmovie_oneday() {
-        let c = Customer {};
-        c.add_rental("Regular Movie", 1);
-        //assert_eq!(1.5, c.get_rental_fee(), 0.0001);
+    fn assertFeeAndPoints(c: Customer, fee: f64, point: i32) {
         assert_eq!(1.5, c.get_rental_fee());
         assert_eq!(1, c.get_rental_point());
+    }
+
+    #[test]
+    pub fn regularmovie_oneday() {
+        let c = Customer {};
+
+        c.add_rental("Regular Movie", 1);
+        assertFeeAndPoints(c, 1.5, 1);
     }
 }
