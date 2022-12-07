@@ -41,4 +41,13 @@ mod customer_test {
         c.add_rental("Regular Movie", 3);
         assertFeeAndPoints(&mut c, 1.5, 1);
     }
+
+    #[test]
+    pub fn regularmovie_four_days() {
+        let mut c = Customer {};
+
+        c.add_rental("Regular Movie", 4);
+        assertFeeAndPoints(&mut c, 3.0, 2);
+    }
+
 }
