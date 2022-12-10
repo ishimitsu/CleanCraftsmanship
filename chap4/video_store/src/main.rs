@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(PartialEq)]
 enum VideoType {
     REGULAR,
     CHILDRENS,
@@ -15,24 +16,25 @@ use crate::VideoType::*;
 
 impl Customer {
     fn default() -> Self {
-        let mut default_movie_registory = HashMap::new();
-        default_movie_registory.insert("RgularMovie".to_string(), REGULAR);
-        default_movie_registory.insert("ChildrensMovie".to_string(), CHILDRENS);
-
-        Self{days: 0, title:String::from(""), movie_registory: default_movie_registory}
+        Self {days: 3, title:String::from(""),
+                movie_registory: HashMap::from ([
+                ("RegularMovie".to_string(), REGULAR),
+                ("ChildrenMovie".to_string(), CHILDRENS),
+             ])}
     }
 
     fn add_rental(&mut self, title: &str, days: i32) {
         self.days = days;
         self.title = title.to_string();
-        self.movie_registory = HashMap::new();
     }
 
     fn get_rental_fee(&mut self) -> i32 {
-        if self.title == "RegularMovie" {
-            return self.apply_grace_period(150, 3)
+        match self.movie_registory.get(&self.title)
+        {
+            Some(REGULAR) => self.apply_grace_period(150, 3),
+            Some(CHILDRENS) => 100,
+            None => 0,
         }
-        100
     }
 
     fn get_rental_point(&mut self) -> i32 {
@@ -61,7 +63,7 @@ mod customer_test {
     pub fn regularmovie_oneday() {
         let mut c = Customer::default();
 
-        c.add_rental("RegularMovie", 1, );
+        c.add_rental("RegularMovie", 1);
         assert_fee_and_points(&mut c, 150, 1);
     }
 
