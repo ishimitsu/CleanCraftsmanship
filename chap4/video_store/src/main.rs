@@ -1,14 +1,19 @@
 pub struct Customer {
+    title: String,
     days: i32,
 }
 
 impl Customer {
     fn add_rental(&mut self, title: &str, days: i32) {
         self.days = days;
+        self.title = title.to_string();
     }
 
     fn get_rental_fee(&mut self) -> i32 {
-        self.apply_grace_period(150, 3)
+        if self.title == "RegularMovie" {
+            return self.apply_grace_period(150, 3)
+        }
+        100
     }
 
     fn get_rental_point(&mut self) -> i32 {
@@ -35,28 +40,36 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_oneday() {
-        let mut c = Customer {days: 0};
+        let mut c = Customer {days: 0, title:String::from("")};
 
-        c.add_rental("Regular Movie", 1);
+        c.add_rental("RegularMovie", 1);
         assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
     pub fn regularmovie_sec_and_third_day_free() {
-        let mut c = Customer {days: 0};
+        let mut c = Customer {days: 0, title:String::from("")};
 
-        c.add_rental("Regular Movie", 2);
+        c.add_rental("RegularMovie", 2);
         assert_fee_and_points(&mut c, 150, 1);
-        c.add_rental("Regular Movie", 3);
+        c.add_rental("RegularMovie", 3);
         assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
     pub fn regularmovie_four_days() {
-        let mut c = Customer {days: 0};
+        let mut c = Customer {days: 0, title:String::from("")};
 
-        c.add_rental("Regular Movie", 4);
+        c.add_rental("RegularMovie", 4);
         assert_fee_and_points(&mut c, 300, 2);
+    }
+
+    #[test]
+    pub fn childrens_movie_one_days() {
+        let mut c = Customer {days: 0, title:String::from("")};
+
+        c.add_rental("ChildrenMovie", 1);
+        assert_fee_and_points(&mut c, 100, 1);
     }
 
 }
