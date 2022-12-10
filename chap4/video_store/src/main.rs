@@ -7,22 +7,19 @@ impl Customer {
         self.days = days;
     }
 
-    fn get_rental_fee(&mut self) -> f64 {
-        let mut fee: f64 = 1.5;
-        if self.days > 3 {
-            fee = fee + 1.5 * (self.days as f64 - 3.0);
-        }
-
-        fee
+    fn get_rental_fee(&mut self) -> i32 {
+        self.apply_grace_period(150, 3)
     }
 
     fn get_rental_point(&mut self) -> i32 {
-        let mut points: i32 = 1;
-        if self.days > 3 {
-            points = points + (self.days - 3)
-        }
+        self.apply_grace_period(1, 3)
+    }
 
-        points
+    fn apply_grace_period(&mut self, amount: i32, grace: i32) -> i32 {
+        if self.days > grace {
+            return amount + amount * (self.days - grace);
+        }
+        amount
     }
 }
 
@@ -31,7 +28,7 @@ impl Customer {
 mod customer_test {
     use super::*;
 
-    fn assertFeeAndPoints(c: &mut Customer, fee: f64, points: i32) {
+    fn assert_fee_and_points(c: &mut Customer, fee: i32, points: i32) {
         assert_eq!(fee, c.get_rental_fee());
         assert_eq!(points, c.get_rental_point());
     }
@@ -41,7 +38,7 @@ mod customer_test {
         let mut c = Customer {days: 0};
 
         c.add_rental("Regular Movie", 1);
-        assertFeeAndPoints(&mut c, 1.5, 1);
+        assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
@@ -49,9 +46,9 @@ mod customer_test {
         let mut c = Customer {days: 0};
 
         c.add_rental("Regular Movie", 2);
-        assertFeeAndPoints(&mut c, 1.5, 1);
+        assert_fee_and_points(&mut c, 150, 1);
         c.add_rental("Regular Movie", 3);
-        assertFeeAndPoints(&mut c, 1.5, 1);
+        assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
@@ -59,7 +56,7 @@ mod customer_test {
         let mut c = Customer {days: 0};
 
         c.add_rental("Regular Movie", 4);
-        assertFeeAndPoints(&mut c, 3.0, 2);
+        assert_fee_and_points(&mut c, 300, 2);
     }
 
 }
