@@ -1,12 +1,31 @@
+use std::collections::HashMap;
+
+enum VideoType {
+    REGULAR,
+    CHILDRENS,
+}
+
 pub struct Customer {
     title: String,
     days: i32,
+    movie_registory: HashMap<String, VideoType>,
 }
 
+use crate::VideoType::*;
+
 impl Customer {
+    fn default() -> Self {
+        let mut default_movie_registory = HashMap::new();
+        default_movie_registory.insert("RgularMovie".to_string(), REGULAR);
+        default_movie_registory.insert("ChildrensMovie".to_string(), CHILDRENS);
+
+        Self{days: 0, title:String::from(""), movie_registory: default_movie_registory}
+    }
+
     fn add_rental(&mut self, title: &str, days: i32) {
         self.days = days;
         self.title = title.to_string();
+        self.movie_registory = HashMap::new();
     }
 
     fn get_rental_fee(&mut self) -> i32 {
@@ -40,15 +59,15 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_oneday() {
-        let mut c = Customer {days: 0, title:String::from("")};
+        let mut c = Customer::default();
 
-        c.add_rental("RegularMovie", 1);
+        c.add_rental("RegularMovie", 1, );
         assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
     pub fn regularmovie_sec_and_third_day_free() {
-        let mut c = Customer {days: 0, title:String::from("")};
+        let mut c = Customer::default();
 
         c.add_rental("RegularMovie", 2);
         assert_fee_and_points(&mut c, 150, 1);
@@ -58,7 +77,7 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_four_days() {
-        let mut c = Customer {days: 0, title:String::from("")};
+        let mut c = Customer::default();
 
         c.add_rental("RegularMovie", 4);
         assert_fee_and_points(&mut c, 300, 2);
@@ -66,7 +85,7 @@ mod customer_test {
 
     #[test]
     pub fn childrens_movie_one_days() {
-        let mut c = Customer {days: 0, title:String::from("")};
+        let mut c = Customer::default();
 
         c.add_rental("ChildrenMovie", 1);
         assert_fee_and_points(&mut c, 100, 1);
