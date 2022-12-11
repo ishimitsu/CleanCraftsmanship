@@ -106,25 +106,28 @@ mod customer_test {
     #[test]
     pub fn regularmovie_oneday() {
         let mut c = Customer::default();
-
         c.add_rental("RegularMovie", 1);
         assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
-    pub fn regularmovie_sec_and_third_day_free() {
+    pub fn regularmovie_sec_day_free() {
         let mut c = Customer::default();
-
         c.add_rental("RegularMovie", 2);
-        assert_fee_and_points(&mut c, 150, 1);
-        c.add_rental("RegularMovie", 3);
         assert_fee_and_points(&mut c, 150, 1);
     }
 
     #[test]
+    pub fn regularmovie_third_day_free() {
+        let mut c = Customer::default();
+        c.add_rental("RegularMovie", 3);
+        assert_fee_and_points(&mut c, 150, 1);
+    }
+
+
+    #[test]
     pub fn regularmovie_four_days() {
         let mut c = Customer::default();
-
         c.add_rental("RegularMovie", 4);
         assert_fee_and_points(&mut c, 300, 2);
     }
@@ -132,7 +135,6 @@ mod customer_test {
     #[test]
     pub fn childrens_movie_one_days() {
         let mut c = Customer::default();
-
         c.add_rental("ChildrenMovie", 1);
         assert_fee_and_points(&mut c, 100, 1);
     }
@@ -140,7 +142,6 @@ mod customer_test {
     #[test]
     pub fn childrens_movie_four_days() {
         let mut c = Customer::default();
-
         c.add_rental("ChildrenMovie", 4);
         assert_fee_and_points(&mut c, 400, 1); // 400 is for using 3 at get_rental_point
     }
@@ -148,7 +149,6 @@ mod customer_test {
     #[test]
     pub fn one_regular_one_childrens_four_days() {
         let mut c = Customer::default();
-
         c.add_rental("RegularMovie", 4); // $3 + 2p
         c.add_rental("ChildrenMovie", 4); // $4 + 1p
         assert_fee_and_points(&mut c, 700, 3);
