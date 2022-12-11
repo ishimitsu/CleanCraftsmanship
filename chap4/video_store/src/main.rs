@@ -20,17 +20,16 @@ impl VideoRegistory {
              ])}
     }
 
-    fn static get_type(&mut self, title: String) -> VideoType {
-        match self.movie_registory.get(&self.title)
-        {
+    fn get_type(&mut self, title: &String) -> VideoType {
+        match self.video_registory.get(title) {
             Some(REGULAR) => REGULAR,
             Some(CHILDRENS) => CHILDRENS,
-            None => None,
+            None => CHILDRENS,
         }
     }
 
-    fn static add_movie(&mut self, title: String, type: VideoType) {
-        self.video_registory.insert(title, type);
+    fn add_movie(&mut self, title: String, video_type: VideoType) {
+        self.video_registory.insert(title, video_type);
     }
 }
 
@@ -40,13 +39,7 @@ pub struct Customer {
 }
 
 impl Customer {
-    fn default() -> Self {
-        Self {days: 3, title:String::from(""),
-                movie_registory: HashMap::from ([
-                ("RegularMovie".to_string(), REGULAR),
-                ("ChildrenMovie".to_string(), CHILDRENS),
-             ])}
-    }
+    //fn default() -> Self { Self {days: 3, title:String::from("")} }
 
     fn add_rental(&mut self, title: &str, days: i32) {
         self.days = days;
@@ -54,11 +47,11 @@ impl Customer {
     }
 
     fn get_rental_fee(&mut self) -> i32 {
-        match self.movie_registory.get(&self.title)
+        let mut video_registory = VideoRegistory::default();
+        match video_registory.get_type(&self.title)
         {
-            Some(REGULAR) => self.apply_grace_period(150, 3),
-            Some(CHILDRENS) => 100,
-            None => 0,
+            REGULAR => self.apply_grace_period(150, 3),
+            CHILDRENS => 100,
         }
     }
 
@@ -74,7 +67,6 @@ impl Customer {
     }
 }
 
-
 #[cfg(test)]
 mod customer_test {
     use super::*;
@@ -86,7 +78,7 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_oneday() {
-        let mut c = Customer::default();
+        let mut c = Customer{days: 3, title:String::from("")};
 
         c.add_rental("RegularMovie", 1);
         assert_fee_and_points(&mut c, 150, 1);
@@ -94,7 +86,7 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_sec_and_third_day_free() {
-        let mut c = Customer::default();
+        let mut c = Customer{days: 3, title:String::from("")};
 
         c.add_rental("RegularMovie", 2);
         assert_fee_and_points(&mut c, 150, 1);
@@ -104,7 +96,7 @@ mod customer_test {
 
     #[test]
     pub fn regularmovie_four_days() {
-        let mut c = Customer::default();
+        let mut c = Customer{days: 3, title:String::from("")};
 
         c.add_rental("RegularMovie", 4);
         assert_fee_and_points(&mut c, 300, 2);
@@ -112,7 +104,7 @@ mod customer_test {
 
     #[test]
     pub fn childrens_movie_one_days() {
-        let mut c = Customer::default();
+        let mut c = Customer{days: 3, title:String::from("")};
 
         c.add_rental("ChildrenMovie", 1);
         assert_fee_and_points(&mut c, 100, 1);
