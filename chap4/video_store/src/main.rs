@@ -6,13 +6,38 @@ enum VideoType {
     CHILDRENS,
 }
 
+use crate::VideoType::*;
+
+pub struct VideoRegistory {
+    video_registory: HashMap<String, VideoType>,
+}
+
+impl VideoRegistory {
+    fn default() -> Self {
+        Self {video_registory: HashMap::from ([
+                ("RegularMovie".to_string(), REGULAR),
+                ("ChildrenMovie".to_string(), CHILDRENS),
+             ])}
+    }
+
+    fn static get_type(&mut self, title: String) -> VideoType {
+        match self.movie_registory.get(&self.title)
+        {
+            Some(REGULAR) => REGULAR,
+            Some(CHILDRENS) => CHILDRENS,
+            None => None,
+        }
+    }
+
+    fn static add_movie(&mut self, title: String, type: VideoType) {
+        self.video_registory.insert(title, type);
+    }
+}
+
 pub struct Customer {
     title: String,
     days: i32,
-    movie_registory: HashMap<String, VideoType>,
 }
-
-use crate::VideoType::*;
 
 impl Customer {
     fn default() -> Self {
