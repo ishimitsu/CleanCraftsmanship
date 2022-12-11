@@ -56,7 +56,12 @@ impl Customer {
     }
 
     fn get_rental_point(&mut self) -> i32 {
-        self.apply_grace_period(1, 3)
+        let mut video_registory = VideoRegistory::default();
+        match video_registory.get_type(&self.title)
+        {
+            REGULAR => self.apply_grace_period(1, 3),
+            CHILDRENS => 1,
+        }
     }
 
     fn apply_grace_period(&mut self, amount: i32, grace: i32) -> i32 {
@@ -108,6 +113,14 @@ mod customer_test {
 
         c.add_rental("ChildrenMovie", 1);
         assert_fee_and_points(&mut c, 100, 1);
+    }
+
+    #[test]
+    pub fn childrens_movie_four_days() {
+        let mut c = Customer{days: 3, title:String::from("")};
+
+        c.add_rental("ChildrenMovie", 4);
+        assert_fee_and_points(&mut c, 400, 1); // 400 is for using 3 at get_rental_point
     }
 
 }
