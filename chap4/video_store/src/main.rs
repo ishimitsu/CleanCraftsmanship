@@ -123,4 +123,13 @@ mod customer_test {
         assert_fee_and_points(&mut c, 400, 1); // 400 is for using 3 at get_rental_point
     }
 
+    #[test]
+    pub fn one_regular_one_childrens_four_days() {
+        let mut c = Customer{days: 3, title:String::from("")};
+
+        c.add_rental("RegularMovie", 4); // $3 + 2p
+        c.add_rental("ChildrenMovie", 4); // $4 + 1p
+        assert_fee_and_points(&mut c, 700, 3);
+    }
+
 }
