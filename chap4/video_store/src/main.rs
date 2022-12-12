@@ -40,7 +40,52 @@ pub struct Rental {
 }
 
 impl Rental {
+    fn default(title: &str, days: i32) {
+        let mut video_registory = VideoRegistory::default();
+        Self {title: title.to_string(), days: days,
+              video_type: video_registory.get_type(&title.to_string())};
+    }
 
+    /*
+    fn get_title(&mut self) -> String {
+        return self.title;
+    }
+
+    fn get_type(&mut self) -> VideoType {
+        return self.video_type;
+    }
+     */
+
+    fn get_fee(&mut self) -> i32 {
+        let mut fee: i32 = 0;
+        let mut video_registory = VideoRegistory::default();
+
+        match video_registory.get_type(&self.title)
+        {
+            REGULAR => fee = fee + Rental::apply_grace_period(150, self.days, 3),
+            CHILDRENS => fee = fee + self.days * 100,
+        }
+        fee
+    }
+
+    fn get_point(&mut self) -> i32 {
+        let mut point: i32 = 0;
+        let mut video_registory = VideoRegistory::default();
+
+        match video_registory.get_type(&self.title)
+        {
+            REGULAR => point = point + Rental::apply_grace_period(1, self.days, 3),
+            CHILDRENS => point = point + 1,
+        }
+        point
+    }
+
+    fn apply_grace_period(amount: i32, days: i32, grace: i32) -> i32 {
+        if days > grace {
+            return amount + amount * (days - grace);
+        }
+        amount
+    }
 }
 
 pub struct Customer {
